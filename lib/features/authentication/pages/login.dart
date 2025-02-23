@@ -68,7 +68,9 @@ class LoginPage extends StatelessWidget {
             CupertinoButton.filled(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    print(authState.phoneController.text);
+                    context.push(
+                      "/auth/otp/${authState.phoneCode + authState.phoneController.text}",
+                    );
                   }
                 },
                 child: Text(

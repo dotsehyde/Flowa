@@ -68,7 +68,8 @@ class OnboardingPage extends StatelessWidget {
           ),
           Spacer(),
           CupertinoButton.filled(
-                  onPressed: () {
+                  onPressed: () async {
+                    await setValue("hasOnboarded", true);
                     context.pushReplacement("/auth");
                   },
                   child: Text(

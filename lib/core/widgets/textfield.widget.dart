@@ -40,6 +40,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
   void initState() {
     if (widget.isPhoneField) {
       countryCode = widget.countryCodes![0];
+      widget.setCountryCode!(countryCode!);
     }
     super.initState();
   }
