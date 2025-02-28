@@ -1,13 +1,15 @@
-import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:nb_utils/nb_utils.dart';
 
-class AppController extends ChangeNotifier {
-  static final AppController _instance = AppController._();
-  factory AppController() {
-    return _instance;
+class AppController extends GetxController {
+  static final to = Get.find<AppController>();
+  var currentIndex = 0.obs;
+  final List<String> _routes = ['/home', '/wallet', '/profile'];
+  String changeBottomNav(int index) {
+    currentIndex.value = index;
+    return _routes[index];
   }
-  AppController._();
 
-  bool isAuthenticated = false;
+  bool isAuthenticated = true;
   bool hasOnboarded = getBoolAsync("hasOnboarded", defaultValue: false);
 }

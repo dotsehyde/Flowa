@@ -27,7 +27,7 @@ class LoginPage extends StatelessWidget {
             Text(
               "Login",
               textAlign: TextAlign.center,
-              style: context.textTheme.headlineSmall!.copyWith(
+              style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                   fontSize: 20.sp,
                   color: Theme.of(context).colorScheme.secondary,
                   fontWeight: FontWeight.bold),
@@ -36,14 +36,16 @@ class LoginPage extends StatelessWidget {
             Text(
               "Please enter your phone number,\nto log into your account",
               textAlign: TextAlign.center,
-              style: context.textTheme.bodyMedium!
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium!
                   .copyWith(fontSize: 16.sp, color: Colors.grey),
             ),
             3.sh.toInt().height,
             CustomTextField(
               isPhoneField: true,
               setCountryCode: (cc) {
-                authState.phoneCode = cc.code;
+                authState.phoneCode.value = cc.code;
               },
               validator: (v) {
                 if (v!.isEmpty) {
@@ -69,13 +71,13 @@ class LoginPage extends StatelessWidget {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     context.push(
-                      "/auth/otp/${authState.phoneCode + authState.phoneController.text}",
+                      "/auth/otp/${authState.phoneCode.value + authState.phoneController.text}",
                     );
                   }
                 },
                 child: Text(
                   "CONTINUE",
-                  style: context.textTheme.bodyMedium!.copyWith(
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                       fontSize: 16.sp,
                       letterSpacing: 2,
                       fontWeight: FontWeight.w700,
@@ -92,7 +94,7 @@ class LoginPage extends StatelessWidget {
                   },
                   child: Text(
                     "Register",
-                    style: context.textTheme.bodyMedium!.copyWith(
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                         decoration: TextDecoration.underline,
                         color: Theme.of(context).colorScheme.primary,
                         fontWeight: FontWeight.w600),

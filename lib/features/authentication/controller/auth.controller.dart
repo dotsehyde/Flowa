@@ -3,53 +3,39 @@ import 'dart:async';
 import 'package:flowa/core/config/constants.dart';
 import 'package:flowa/core/controller/app.controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class AuthController extends ChangeNotifier {
-  static final AuthController _instance = AuthController._internal();
-  factory AuthController() {
-    return _instance;
-  }
-  AuthController._internal();
-
+class AuthController extends GetxController {
   //Inject
   final appState = AppController();
 
   @override
-  void dispose() {
+  void onClose() {
     phoneController.dispose();
-    super.dispose();
+    otpController.dispose();
+    super.onClose();
   }
 
-  String phoneCode = "";
+  var phoneCode = "".obs;
 
   TextEditingController phoneController = TextEditingController();
   TextEditingController otpController = TextEditingController();
-
-  void login() {
-    appState.isAuthenticated = true;
-  }
 }
 
-class ResendTimerController extends ChangeNotifier {
-  static final ResendTimerController _instance = ResendTimerController._();
-  factory ResendTimerController() {
-    return _instance;
-  }
-  ResendTimerController._();
+class ResendTimerController extends GetxController {
+  late Timer timer;
+  var resendTime = 0.obs;
 
   @override
-  void dispose() {
+  void onClose() {
     if (timer.isActive) {
       timer.cancel();
     }
-    super.dispose();
+    super.onClose();
   }
 
-  late Timer timer;
-
-  int resendTime = 0;
   void startTimer() {
-    resendTime = RESEND_TIME;
+    resendTime.value = RESEND_TIME;
     timer = Timer.periodic(Duration(seconds: 1), (t) {
       updateTimer(t.tick);
     });
@@ -60,8 +46,7 @@ class ResendTimerController extends ChangeNotifier {
   }
 
   void updateTimer(int t) {
-    resendTime--;
-    notifyListeners();
+    resendTime.value--;
     if (t == RESEND_TIME) {
       timer.isActive ? timer.cancel() : null;
     }

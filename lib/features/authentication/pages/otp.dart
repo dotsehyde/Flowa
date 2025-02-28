@@ -1,3 +1,4 @@
+import 'package:flowa/core/controller/app.controller.dart';
 import 'package:flowa/core/widgets/otpfield.widget.dart';
 import 'package:flowa/features/authentication/controller/auth.controller.dart';
 import 'package:flutter/cupertino.dart';
@@ -46,7 +47,7 @@ class _OTPPageState extends State<OTPPage> {
           Text(
             "Enter OTP Code",
             textAlign: TextAlign.center,
-            style: context.textTheme.headlineSmall!.copyWith(
+            style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                 fontSize: 20.sp,
                 color: Theme.of(context).colorScheme.secondary,
                 fontWeight: FontWeight.bold),
@@ -58,21 +59,24 @@ class _OTPPageState extends State<OTPPage> {
                 children: [
                   TextSpan(
                       text: widget.phone,
-                      style: context.textTheme.bodyMedium!.copyWith(
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                           fontSize: 16.sp, color: context.primaryColor))
                 ]),
             textAlign: TextAlign.center,
-            style: context.textTheme.bodyMedium!
+            style: Theme.of(context)
+                .textTheme
+                .bodyMedium!
                 .copyWith(fontSize: 16.sp, color: Colors.grey),
           ),
           3.sh.toInt().height,
           CustomOtpField(
               length: 6,
+              fieldSize: 27.8.sp,
               keyboardType: TextInputType.datetime,
               controller: authState.otpController,
               shape: OtpFieldShape.rounded,
               onCompleted: (otp) {
-                print("dd: $otp");
+                // print("dd: $otp");
               }),
           3.sh.toInt().height,
           AnimatedBuilder(
@@ -86,7 +90,7 @@ class _OTPPageState extends State<OTPPage> {
                       },
                       child: Text(
                         "Resend code",
-                        style: context.textTheme.bodyMedium!.copyWith(
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                             decoration: TextDecoration.underline,
                             color: Theme.of(context).colorScheme.primary,
                             fontWeight: FontWeight.w600),
@@ -104,12 +108,12 @@ class _OTPPageState extends State<OTPPage> {
           ),
           CupertinoButton.filled(
               onPressed: () {
-                authState.login();
+                AppController.to.isAuthenticated = true;
                 context.pushReplacement("/");
               },
               child: Text(
                 "VERIFY",
-                style: context.textTheme.bodyMedium!.copyWith(
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                     fontSize: 16.sp,
                     letterSpacing: 2,
                     fontWeight: FontWeight.w700,
@@ -126,7 +130,7 @@ class _OTPPageState extends State<OTPPage> {
                 },
                 child: Text(
                   "Go Back",
-                  style: context.textTheme.bodyMedium!.copyWith(
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                       decoration: TextDecoration.underline,
                       color: Theme.of(context).colorScheme.primary,
                       fontWeight: FontWeight.w600),

@@ -1,5 +1,9 @@
 import 'package:flowa/features/home/widgets/home_card.widget.dart';
+import 'package:flowa/features/home/widgets/home_menu.widget.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:go_router/go_router.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
@@ -19,7 +23,6 @@ class HomePage extends StatelessWidget {
                   width: 100.w,
                   height: 35.sh,
                   decoration: BoxDecoration(
-                      color: Colors.red,
                       image: DecorationImage(
                           image: AssetImage("assets/img/home_bg.png"),
                           fit: BoxFit.cover)),
@@ -42,12 +45,18 @@ class HomePage extends StatelessWidget {
                               children: [
                                 Text(
                                   "Welcome Back",
-                                  style: context.textTheme.bodyMedium!
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium!
                                       .copyWith(color: Colors.white),
-                                ),
+                                ).animate().fadeIn(),
                                 Text("Name",
-                                    style: context.textTheme.bodyMedium!
-                                        .copyWith(color: Colors.white)),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium!
+                                            .copyWith(color: Colors.white))
+                                    .animate()
+                                    .fadeIn(),
                               ],
                             ),
                           ],
@@ -66,21 +75,120 @@ class HomePage extends StatelessWidget {
                               )),
                         )
                       ],
-                    ).paddingSymmetric(horizontal: 5.sw),
+                    ).paddingSymmetric(horizontal: 5.sw).paddingTop(2.sh),
                   ),
                 ),
               ),
               //Services
               Positioned(
                   bottom: 0,
-                  child: Container(
+                  child: SizedBox(
                     width: 100.sw,
-                    height: 70.sh,
-                    color: Colors.amber,
+                    height: 75.sh,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      spacing: 2.sh,
+                      children: [
+                        Text(
+                          "All Services",
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyLarge!
+                              .copyWith(
+                                  fontSize: 18.sp, fontWeight: FontWeight.bold),
+                        )
+                            .withWidth(100.sw)
+                            .paddingSymmetric(horizontal: 5.sw)
+                            .paddingTop(25.sh)
+                            .animate()
+                            .fade(
+                              duration: 300.ms,
+                            )
+                            .slideY(
+                                begin: -.3,
+                                end: 0,
+                                duration: 300.ms,
+                                curve: Curves.easeInOut),
+                        Expanded(
+                          child: GridView(
+                            padding: EdgeInsets.symmetric(horizontal: 6.sw),
+                            physics: NeverScrollableScrollPhysics(),
+                            gridDelegate:
+                                SliverGridDelegateWithMaxCrossAxisExtent(
+                                    crossAxisSpacing: 8,
+                                    mainAxisSpacing: 3,
+                                    mainAxisExtent: 36.sp,
+                                    maxCrossAxisExtent: 70.sp),
+                            children: [
+                              HomeMenuCard(
+                                bgColor: Colors.pink.shade300,
+                                icon: Icon(Icons.electric_bolt_sharp,
+                                    color: Colors.pink.shade700),
+                                title: "Electric",
+                                onTap: () {
+                                  context.push("/home/electric");
+                                },
+                              ),
+                              HomeMenuCard(
+                                bgColor: Colors.purple.shade300,
+                                icon: Icon(Icons.shopping_cart,
+                                    color: Colors.purple.shade700),
+                                title: "Merchant",
+                                onTap: () {},
+                              ),
+                              HomeMenuCard(
+                                bgColor: Colors.blue.shade300,
+                                icon: Icon(CupertinoIcons.globe,
+                                    color: Colors.blue.shade700),
+                                title: "Internet",
+                                onTap: () {},
+                              ),
+                              HomeMenuCard(
+                                bgColor: Colors.yellow.shade300,
+                                icon: Icon(CupertinoIcons.ticket,
+                                    color: Colors.yellow.shade800),
+                                title: "Ticket",
+                                onTap: () {},
+                              ),
+                              HomeMenuCard(
+                                bgColor: Colors.orange.shade300,
+                                icon: Icon(Icons.phone_android_rounded,
+                                    color: Colors.orange.shade700),
+                                title: "Mobile",
+                                onTap: () {},
+                              ),
+                              HomeMenuCard(
+                                bgColor: Colors.indigo.shade300,
+                                icon: Icon(CupertinoIcons.arrow_up_arrow_down,
+                                    color: Colors.indigo.shade700),
+                                title: "Transfer",
+                                onTap: () {},
+                              ),
+                              HomeMenuCard(
+                                bgColor: Colors.red.shade200,
+                                icon: Icon(Icons.category_rounded,
+                                    color: Colors.red.shade700),
+                                title: "More",
+                              ),
+                            ],
+                          )
+                              .animate()
+                              .slideY(
+                                begin: 1,
+                                end: 0,
+                                delay: 130.ms,
+                                duration: 300.ms,
+                                curve: Curves.easeInOut,
+                              )
+                              .fadeIn(),
+                        ),
+                      ],
+                    ),
                   )),
               //Card
               Positioned(
-                  top: 20.sh,
+                  top: 18.sh,
                   child: Container(
                     width: 100.sw,
                     alignment: Alignment.center,
@@ -96,7 +204,7 @@ class HomePage extends StatelessWidget {
                                 spreadRadius: 0)
                           ]),
                       width: 90.sw,
-                      height: 28.sh,
+                      height: 30.sh,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -105,22 +213,30 @@ class HomePage extends StatelessWidget {
                             children: [
                               Text(
                                 "Balance",
-                                style: context.textTheme.bodyLarge!.copyWith(
-                                    fontSize: 14.sp, color: Colors.grey),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge!
+                                    .copyWith(
+                                        fontSize: 15.sp, color: Colors.grey),
                               ),
                               Text(
                                 "ACTIVE",
-                                style: context.textTheme.bodyLarge!.copyWith(
-                                    fontSize: 14.sp,
-                                    color: context.primaryColor),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge!
+                                    .copyWith(
+                                        fontSize: 15.sp,
+                                        color: context.primaryColor,
+                                        fontWeight: FontWeight.bold),
                               )
                             ],
                           ),
                           Text(
                             "\$ 700",
-                            style: context.textTheme.bodyLarge!.copyWith(
-                              fontSize: 20.sp,
-                            ),
+                            style:
+                                Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                      fontSize: 20.sp,
+                                    ),
                           ),
                           Divider(
                             color: Colors.grey.shade300,
@@ -145,7 +261,7 @@ class HomePage extends StatelessWidget {
                                 icon: Icon(Icons.add),
                               )
                             ],
-                          ).paddingTop(2.sh)
+                          ).paddingTop(3.sh)
                         ],
                       )
                           .paddingSymmetric(horizontal: 5.sw, vertical: 2.sh)
