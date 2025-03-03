@@ -10,6 +10,6 @@ class AppController extends GetxController {
     return _routes[index];
   }
 
-  bool isAuthenticated = true;
+  bool isAuthenticated = false;
   bool hasOnboarded = getBoolAsync("hasOnboarded", defaultValue: false);
 }

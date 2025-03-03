@@ -34,7 +34,7 @@ class CustomTextField extends StatefulWidget {
 }
 
 class _CustomTextFieldState extends State<CustomTextField> {
-  late CountryCode? countryCode;
+  CountryCode? countryCode;
   bool showPassword = false;
   @override
   void initState() {
@@ -53,6 +53,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
       keyboardType: widget.keyboardType,
       obscureText: widget.isPasswordField ? !showPassword : false,
       validator: widget.validator,
+      enableInteractiveSelection: true,
+      autovalidateMode: AutovalidateMode.onUnfocus,
       style: context.textTheme.bodyMedium!
           .copyWith(color: Colors.black, fontSize: 15.sp),
       decoration: InputDecoration(
@@ -60,7 +62,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         prefix: !widget.isPhoneField
             ? null
             : DropdownButtonHideUnderline(
-                child: DropdownButton<CountryCode>(
+                child: DropdownButton<String?>(
                     padding: EdgeInsets.zero,
                     icon: VerticalDivider(
                       color: Colors.grey,
@@ -69,10 +71,13 @@ class _CustomTextFieldState extends State<CustomTextField> {
                     isDense: true,
                     dropdownColor: Theme.of(context).scaffoldBackgroundColor,
                     borderRadius: BorderRadius.circular(10),
-                    value: countryCode,
+                    value: countryCode?.code,
                     items: widget.countryCodes!.map((e) {
-                      return DropdownMenuItem<CountryCode>(
-                        value: e,
+                      var el = widget.countryCodes?.firstWhere(
+                          (el) => el.code == e.code,
+                          orElse: () => widget.countryCodes![0]);
+                      return DropdownMenuItem<String>(
+                        value: el!.code,
                         child: Text(
                           e.label,
                           style: context.textTheme.bodyMedium!
@@ -81,9 +86,12 @@ class _CustomTextFieldState extends State<CustomTextField> {
                       );
                     }).toList(),
                     onChanged: (v) {
-                      widget.setCountryCode!(v!);
+                      var el = widget.countryCodes?.firstWhere(
+                          (el) => el.code == v,
+                          orElse: () => widget.countryCodes![0]);
+                      widget.setCountryCode!(el!);
                       setState(() {
-                        countryCode = v;
+                        countryCode = el;
                       });
                     }),
               ),

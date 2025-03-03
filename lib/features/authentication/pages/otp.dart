@@ -3,6 +3,7 @@ import 'package:flowa/core/widgets/otpfield.widget.dart';
 import 'package:flowa/features/authentication/controller/auth.controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -19,17 +20,15 @@ class OTPPage extends StatefulWidget {
 }
 
 class _OTPPageState extends State<OTPPage> {
-  final resendTimer = ResendTimerController();
-  final authState = AuthController();
   @override
   void initState() {
-    resendTimer.startTimer();
+    ResendTimerController.to.startTimer();
     super.initState();
   }
 
   @override
   void dispose() {
-    resendTimer.startTimer();
+    ResendTimerController.to.startTimer();
     super.dispose();
   }
 
@@ -73,20 +72,19 @@ class _OTPPageState extends State<OTPPage> {
               length: 6,
               fieldSize: 27.8.sp,
               keyboardType: TextInputType.datetime,
-              controller: authState.otpController,
+              controller: AuthController.to.otpController,
               shape: OtpFieldShape.rounded,
               onCompleted: (otp) {
                 // print("dd: $otp");
               }),
           3.sh.toInt().height,
-          AnimatedBuilder(
-            animation: resendTimer,
-            builder: (context, child) {
-              return resendTimer.resendTime == 0
+          Obx(
+            () {
+              return ResendTimerController.to.resendTime.value == 0
                   ? CupertinoButton(
                       sizeStyle: CupertinoButtonSize.small,
                       onPressed: () {
-                        resendTimer.startTimer();
+                        ResendTimerController.to.startTimer();
                       },
                       child: Text(
                         "Resend code",
@@ -98,10 +96,12 @@ class _OTPPageState extends State<OTPPage> {
                     )
                   : Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: [child!, Text("${resendTimer.resendTime} s")],
+                      children: [
+                        Text("Resend code in "),
+                        Text("${ResendTimerController.to.resendTime.value} s")
+                      ],
                     );
             },
-            child: Text("Resend code in "),
           ),
           Spacer(
             flex: 2,
@@ -109,7 +109,7 @@ class _OTPPageState extends State<OTPPage> {
           CupertinoButton.filled(
               onPressed: () {
                 AppController.to.isAuthenticated = true;
-                context.pushReplacement("/");
+                context.go("/");
               },
               child: Text(
                 "VERIFY",
@@ -126,7 +126,7 @@ class _OTPPageState extends State<OTPPage> {
               CupertinoButton(
                 sizeStyle: CupertinoButtonSize.small,
                 onPressed: () {
-                  context.push("/auth/");
+                  context.replace("/auth/");
                 },
                 child: Text(
                   "Go Back",

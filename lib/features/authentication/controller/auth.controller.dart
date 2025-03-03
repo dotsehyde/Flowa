@@ -1,13 +1,11 @@
 import 'dart:async';
 
 import 'package:flowa/core/config/constants.dart';
-import 'package:flowa/core/controller/app.controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class AuthController extends GetxController {
-  //Inject
-  final appState = AppController();
+  static AuthController to = Get.find<AuthController>();
 
   @override
   void onClose() {
@@ -23,6 +21,7 @@ class AuthController extends GetxController {
 }
 
 class ResendTimerController extends GetxController {
+  static ResendTimerController to = Get.find<ResendTimerController>();
   late Timer timer;
   var resendTime = 0.obs;
 

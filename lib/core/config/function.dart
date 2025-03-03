@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 void registerControllers() {
   Get.put(AppController(), permanent: true);
   Get.lazyPut(() => AuthController());
+  Get.lazyPut(() => ResendTimerController());
   Get.lazyPut(() => HomeController());
 }
 

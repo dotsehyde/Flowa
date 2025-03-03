@@ -9,7 +9,6 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
   final _formKey = GlobalKey<FormState>();
-  final authState = AuthController();
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +44,7 @@ class LoginPage extends StatelessWidget {
             CustomTextField(
               isPhoneField: true,
               setCountryCode: (cc) {
-                authState.phoneCode.value = cc.code;
+                AuthController.to.phoneCode.value = cc.code;
               },
               validator: (v) {
                 if (v!.isEmpty) {
@@ -60,7 +59,7 @@ class LoginPage extends StatelessWidget {
                 CountryCode(label: "🇳🇬 +234", code: "234")
               ],
               textInputAction: TextInputAction.done,
-              controller: authState.phoneController,
+              controller: AuthController.to.phoneController,
               keyboardType: TextInputType.phone,
               label: "Phone Number",
             ),
@@ -70,8 +69,8 @@ class LoginPage extends StatelessWidget {
             CupertinoButton.filled(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    context.push(
-                      "/auth/otp/${authState.phoneCode.value + authState.phoneController.text}",
+                    context.pushReplacement(
+                      "/auth/otp/${AuthController.to.phoneCode.value + AuthController.to.phoneController.text}",
                     );
                   }
                 },
